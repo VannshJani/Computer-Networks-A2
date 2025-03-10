@@ -1,5 +1,3 @@
-# Computer-Networks-A2
-
 # CS 331: Computer Networks Assignment #2 - Task 1
 
 This repository contains the code and scripts for Task 1 of Assignment 2. The goal of Task 1 is to compare different TCP congestion control protocols using a custom Mininet topology. The experiments involve generating TCP traffic with iPerf3, capturing packets with tcpdump, and analyzing key performance metrics such as throughput, goodput, packet loss rate, and maximum TCP window size.
