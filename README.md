@@ -1,120 +1,85 @@
-# CS 331: Computer Networks Assignment #2 - Task 1
+# Computer Networks Assignment-2
 
-This repository contains the code and scripts for Task 1 of Assignment 2. The goal of Task 1 is to compare different TCP congestion control protocols using a custom Mininet topology. The experiments involve generating TCP traffic with iPerf3, capturing packets with tcpdump, and analyzing key performance metrics such as throughput, goodput, packet loss rate, and maximum TCP window size.
+This repository contains code for assignment-2:
 
----
+1. **Task-1: Comparison of Congestion Control Protocols**
+   - This task involves creating a Mininet topology and running experiments to compare different TCP congestion control protocols.
+   - The code includes scripts to run experiments and analyze the results from pcap files.
 
-## Table of Contents
+2. **Task-2 Part A: Implementation of SYN Flood Attack**
+   - This task involves modifying Linux kernel parameters to implement a SYN flood attack.
+   - The code for this part is not included here but will be provided separately.
 
-- [Assignment Overview](#assignment-overview)
-- [Team & Protocol Assignment](#team--protocol-assignment)
-- [Topology and Experiment Description](#topology-and-experiment-description)
-- [Prerequisites](#prerequisites)
-- [Installation & Setup](#installation--setup)
-- [Experiment Script Usage](#experiment-script-usage)
-- [Visualization Script Usage](#visualization-script-usage)
-- [File Structure](#file-structure)
-- [Notes](#notes)
-- [Submission Guidelines](#submission-guidelines)
-- [License](#license)
+## Dependencies
 
----
+For Task-1:
 
-## Assignment Overview
+- **Mininet**: A network emulator for creating custom network topologies.
+- **iPerf3**: A tool for measuring network throughput.
+- **Python 3.x**: For scripting the experiments and analyzing pcap files.
+- **Scapy**: A Python library for parsing pcap files.
+- **Matplotlib**: For plotting throughput and window size over time.
 
-**Task 1: Comparison of Congestion Control Protocols [50 Points]**
+For Task-2 Part A:
 
-- **Objective:**  
-  Create a Mininet topology with 7 hosts (H1 to H7) connected to 4 switches (S1, S2, S3, S4). H1–H6 act as TCP clients and H7 as the TCP server. Generate TCP traffic using iPerf3 with configurable congestion control schemes and network parameters, capture the traffic, and analyze key performance metrics.
-  
-- **Performance Metrics to Measure:**  
-  1. Throughput over time (with Wireshark I/O graphs)  
-  2. Goodput  
-  3. Packet loss rate  
-  4. Maximum TCP window size achieved (with Wireshark I/O graphs)
+- **Linux Environment**: To modify kernel parameters.
+- **tcpdump**: For capturing network packets.
+- **tshark**: For processing pcap files.
 
----
+## Usage
 
-## Team & Protocol Assignment
+### Task-1
 
-- **Teamwork:**  
-  The assignment must be completed in pairs. Only one team member (Member 1) should submit the assignment on behalf of the team.
+1. **Running Experiments**:
+   - Use the first Python script (`experiment.py`) to run the experiments.
+   - Example command:
+     ```
+     python3 experiment.py --option=a --cc=bbr --loss=0
+     ```
+   - Options:
+     - `--option`: Choose the experiment part (`a`, `b`, `c`, `d`).
+     - `--cc`: Select the congestion control algorithm (`bbr`, `westwood`, `scalable`).
+     - `--loss`: Specify packet loss percentage on the S2-S3 link (default: 0).
 
-- **Protocol Assignment Scheme:**  
-  Each team will work on three congestion control protocols based on their team number using the formulas below:
+2. **Analyzing and Visualizing Metrics**:
+   - Use the second Python script (`analyze_pcap.py`) to analyze pcap files.
+   - Example command:
+     ```
+     python3 analyze_pcap.py pcap_file.pcap
+     ```
+   - This will print goodput, packet loss rate, and maximum TCP window size, and display plots for throughput and window size over time.
 
-  1. **Protocol 1:** `(team_number % 10)`
-  2. **Protocol 2:** `((team_number + 3) % 10)`
-  3. **Protocol 3:** `((team_number + 6) % 10)`
+### Task-2 Part A
 
-- **List of Available Protocols:**
+Instructions for Task-2 Part A will be provided separately.
 
-  | Protocol No. | Protocol    |
-  | ------------ | ----------- |
-  | 0            | Reno        |
-  | 1            | CUBIC       |
-  | 2            | BBR         |
-  | 3            | BIC         |
-  | 4            | Vegas       |
-  | 5            | Westwood    |
-  | 6            | HighSpeed   |
-  | 7            | H-TCP       |
-  | 8            | Scalable    |
-  | 9            | Yeah        |
+## Example Use Cases
 
----
+- **Experiment Part A**:
+  - Run an experiment with BBR congestion control and no packet loss:
+    ```
+    python3 experiment.py --option=a --cc=bbr --loss=0
+    ```
+  - Analyze the resulting pcap file:
+    ```
+    python3 analyze_pcap.py pcap_captures/capture_a_bbr_0_h7_0.pcap
+    ```
 
-## Topology and Experiment Description
+- **Experiment Part B**:
+  - Run a staggered client experiment with Westwood congestion control:
+    ```
+    python3 experiment.py --option=b --cc=westwood --loss=0
+    ```
+  - Analyze the pcap file:
+    ```
+    python3 analyze_pcap.py pcap_captures/capture_b_westwood_0_h7_0.pcap
+    ```
 
-The Mininet topology is designed as follows:
+## Contributing
 
-- **Topology:**
-  - **Switches:** S1, S2, S3, S4
-  - **Hosts:** H1 to H7
-  - **Connections:**  
-    - Hosts H1–H2 connect to S1  
-    - Hosts H3–H4 connect to S2  
-    - Hosts H5–H6 connect to S3  
-    - Host H7 connects to S4  
-    - Inter-switch links:
-      - S1–S2 with 100 Mbps (no loss)
-      - S2–S3 with 50 Mbps (configurable loss)
-      - S3–S4 with 100 Mbps (no loss)
+Contributions are welcome. Please ensure that any new code adheres to the existing structure and style.
 
-- **Experiment Scenarios:**
+## Acknowledgments
 
-  1. **Part (a):**  
-     - Run a single TCP client on H1 connecting to the TCP server on H7.
-     - Measure throughput, goodput, packet loss, and maximum window size.
-
-  2. **Part (b):**  
-     - Run staggered TCP clients on H1, H3, and H4 with different start times and durations:
-       - H1: Start at T=0s, run for 150s
-       - H3: Start at T=15s, run for 120s
-       - H4: Start at T=30s, run for 90s
-     - Measure and compare the performance parameters.
-
-  3. **Part (c):**  
-     - Use the defined inter-switch link bandwidths.
-     - Conduct experiments under various conditions:
-       - **Condition 1:** Only client on H3 is active.
-       - **Condition 2:** Different combinations of clients (H1 & H2, H1 & H3, H1, H3 & H4) connect to H7.
-     - Repeat experiments with link loss on S2–S3 set to 1% and 5% for further analysis.
-
----
-
-## Prerequisites
-
-Ensure you have the following installed:
-
-- **Python 3.x**
-- **Mininet** – Follow the [Mininet installation guide](http://mininet.org/download/) for setup.
-- **iPerf3** – For generating TCP traffic.
-- **tcpdump** – For packet capturing.
-- **Scapy** – For PCAP file parsing.
-- **NumPy** and **Matplotlib** – For numerical analysis and plotting.
-
-Install required Python libraries using pip:
-
-```bash
-pip install numpy matplotlib scapy
+- This project uses Mininet for network emulation and iPerf3 for throughput measurement.
+- Scapy is used for parsing pcap files, and Matplotlib for plotting.
