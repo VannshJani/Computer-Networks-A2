@@ -31,10 +31,10 @@ For Task-2 Part A:
 ### Task-1
 
 1. **Running Experiments**:
-   - Use the first Python script (`experiment.py`) to run the experiments.
+   - Use the first Python script (`topology.py`) to run the experiments.
    - Example command:
      ```
-     python3 experiment.py --option=a --cc=bbr --loss=0
+     python3 topology.py --option=a --cc=bbr --loss=0
      ```
    - Options:
      - `--option`: Choose the experiment part (`a`, `b`, `c`, `d`).
