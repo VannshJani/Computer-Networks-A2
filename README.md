@@ -48,6 +48,7 @@ For Task-2 Part A:
 
 2. **Analyzing and Visualizing Metrics**:
    - Use the second Python script (`analysis.py`) to analyze pcap files.
+   - The pcap files from running the above code will be generated in a pcap_captures folder, replace <pcap_file.pcap> with actual pcap file name from this directory.
    - Example command:
      ```
      python3 analysis.py pcap_file.pcap
