@@ -116,3 +116,109 @@ For Task-2 Part A:
      python3 compute_connection_durations.py
      python3 plot_connection_durations.py
      ```
+
+
+
+# Task 3: Analysis of Nagle's Algorithm on TCP/IP Performance
+
+## What is Nagle's Algorithm?
+
+Nagle's algorithm is a method used to improve the efficiency of TCP/IP networks by reducing the number of small packets sent over the network. It works by combining multiple small outgoing messages into a single, larger packet before transmission.
+
+Key characteristics:
+- It buffers small packets until either:
+  - The previous packet is acknowledged
+  - Enough data accumulates to fill a maximum segment size (MSS)
+- It's especially useful for applications that send small amounts of data frequently
+
+## What is Delayed ACK?
+
+Delayed ACK is a TCP/IP optimization technique that:
+- Allows TCP to delay sending an acknowledgment for received data
+- Typically waits up to 200ms to see if there is any response data to be sent that the ACK can be "piggybacked" on
+- Reduces network overhead by decreasing the number of small ACK packets
+
+# Step-by-Step Execution Guide for Task 3:
+
+This guide provides detailed instructions for setting up and running the experiments to analyze the effect of Nagle's algorithm on TCP/IP performance.
+
+## Prerequisites
+
+- Two machines (can be virtual machines) running Linux
+- Python 3.6 or higher installed
+- Basic networking tools (Wireshark, netstat, etc.)
+- Administrator/root access to modify system settings
+
+## Step 1: File Setup
+
+1. Save the following files to your working directory:
+   - `tcp_server.py`
+   - `tcp_client.py`
+   - `run_tests.py`
+
+2. Ensure the files have execution permissions:
+   ```bash
+   chmod +x tcp_server.py tcp_client.py run_tests.py
+   ```
+
+## Step 2: Manual Testing (For Understanding)
+
+Before running the automated tests, we can manually test each configuration to understand what's happening:
+
+### Configure and Run Server
+
+1. Start the server with the desired configuration:
+
+   ```bash
+   # Configuration 1: Nagle's Algorithm enabled, Delayed-ACK enabled
+   python tcp_server.py --port 9999
+   
+   # Configuration 2: Nagle's Algorithm enabled, Delayed-ACK disabled
+   python tcp_server.py --port 9999 --disable-delayed-ack
+   
+   # Configuration 3: Nagle's Algorithm disabled, Delayed-ACK enabled
+   python tcp_server.py --port 9999 --disable-nagle
+   
+   # Configuration 4: Nagle's Algorithm disabled, Delayed-ACK disabled
+   python tcp_server.py --port 9999 --disable-nagle --disable-delayed-ack
+   ```
+
+### Configure and Run Client
+
+2. In a separate terminal or machine, run the client:
+
+   ```bash
+   # Configuration 1: Nagle's Algorithm enabled, Delayed-ACK enabled
+   python tcp_client.py --server SERVER_IP --port 9999 --file-size 4096 --rate 40 --duration 120
+   
+   # Configuration 2: Nagle's Algorithm enabled, Delayed-ACK disabled
+   python tcp_client.py --server SERVER_IP --port 9999 --file-size 4096 --rate 40 --duration 120 --disable-delayed-ack
+   
+   # Configuration 3: Nagle's Algorithm disabled, Delayed-ACK enabled
+   python tcp_client.py --server SERVER_IP --port 9999 --file-size 4096 --rate 40 --duration 120 --disable-nagle
+   
+   # Configuration 4: Nagle's Algorithm disabled, Delayed-ACK disabled
+   python tcp_client.py --server SERVER_IP --port 9999 --file-size 4096 --rate 40 --duration 120 --disable-nagle --disable-delayed-ack
+   ```
+
+   (We are supposed to replace SERVER_IP with the actual IP address as per our server machine)
+
+3. Observe the output and log files for the performance metrics.
+
+## Step 3: Automated Testing
+
+For consistent results and easier comparison, use the automated test script:
+
+```bash
+python run_tests.py
+```
+
+This script will:
+1. Run all four configurations sequentially
+2. Collect and log performance metrics
+
+## References
+
+1. RFC 896 - Nagle's Algorithm: https://tools.ietf.org/html/rfc896
+2. RFC 1122 - Delayed ACK: https://tools.ietf.org/html/rfc1122
+3. TCP Performance: http://www.tcpipguide.com/free/t_TCPConnectionPerformanceFeaturesPipeliningSlidingWind.htm
