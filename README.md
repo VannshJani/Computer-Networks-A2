@@ -169,7 +169,6 @@ This generates comparative visualizations and metrics in the `results/` director
 - `results/syn_flood_mitigation_comparison.png`: Visualization comparing connection durations
 - `results/connection_durations_original.csv`: Original connection data
 - `results/connection_durations_mitigated.csv`: Mitigated connection data
-- `results/connection_improvement.txt`: Summary of mitigation effectiveness
 
 ### Experiment Details
 
