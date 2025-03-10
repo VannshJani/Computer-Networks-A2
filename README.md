@@ -294,4 +294,3 @@ This script will:
 
 1. RFC 896 - Nagle's Algorithm: https://tools.ietf.org/html/rfc896
 2. RFC 1122 - Delayed ACK: https://tools.ietf.org/html/rfc1122
-3. TCP Performance: http://www.tcpipguide.com/free/t_TCPConnectionPerformanceFeaturesPipeliningSlidingWind.htm
