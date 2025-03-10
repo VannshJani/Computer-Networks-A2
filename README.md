@@ -42,10 +42,10 @@ For Task-2 Part A:
      - `--loss`: Specify packet loss percentage on the S2-S3 link (default: 0).
 
 2. **Analyzing and Visualizing Metrics**:
-   - Use the second Python script (`analyze_pcap.py`) to analyze pcap files.
+   - Use the second Python script (`analysis.py`) to analyze pcap files.
    - Example command:
      ```
-     python3 analyze_pcap.py pcap_file.pcap
+     python3 analysis.py pcap_file.pcap
      ```
    - This will print goodput, packet loss rate, and maximum TCP window size, and display plots for throughput and window size over time.
 
