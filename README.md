@@ -118,6 +118,79 @@ For Task-2 Part A:
      ```
 
 
+# Task 2: Implementation and Mitigation of SYN Flood Attack
+
+## Running Task 2(B): SYN Flood Mitigation
+
+This section provides instructions for running our SYN flood mitigation experiment.
+
+### Prerequisites
+We require the following prerequisites to be installed:
+- Python 3.6+
+- Mininet
+- pexpect
+- tcpdump
+- hping3
+- iperf3
+- tshark
+- matplotlib, pandas, numpy (for processing and visualization)
+- Linux OS (preferably, as the below commands are for Linux)
+
+We can install the Python dependencies using:
+```
+pip install pexpect pandas matplotlib numpy
+```
+
+And system packages using:
+```
+sudo apt install mininet tcpdump hping3 iperf3 tshark
+```
+
+### Execution Steps
+
+**Step 1: Run the baseline experiment (no mitigation)**
+```
+sudo python3 2a.py
+```
+This creates `capture.pcap` and generates baseline data without SYN flood protection.
+
+**Step 2: Run the mitigation experiment**
+```
+sudo python3 2b.py
+```
+This creates `capture_mitigated.pcap` with SYN flood mitigation enabled.
+
+**Step 3: Process and analyze the results**
+```
+python3 processing_and_compute_mitigated.py
+```
+This generates comparative visualizations and metrics in the `results/` directory:
+- `results/syn_flood_mitigation_comparison.png`: Visualization comparing connection durations
+- `results/connection_durations_original.csv`: Original connection data
+- `results/connection_durations_mitigated.csv`: Mitigated connection data
+- `results/connection_improvement.txt`: Summary of mitigation effectiveness
+
+### Experiment Details
+
+**Key mitigation techniques we implemented:**
+- SYN cookies enabled (`net.ipv4.tcp_syncookies=1`)
+- Increased SYN-ACK retries (`net.ipv4.tcp_synack_retries=5`)
+- Optimized TCP resource management
+
+**Analysis**
+
+To examine the packet captures in Wireshark, we use:
+```
+wireshark capture.pcap
+wireshark capture_mitigated.pcap
+```
+
+Useful Wireshark filters for our analysis:
+- SYN packets: `tcp.flags.syn == 1 and tcp.flags.ack == 0`
+- SYN-ACK responses: `tcp.flags.syn == 1 and tcp.flags.ack == 1`
+- Attack traffic: `tcp.port == 5201`
+
+
 
 # Task 3: Analysis of Nagle's Algorithm on TCP/IP Performance
 
