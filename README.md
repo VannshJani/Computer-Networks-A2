@@ -55,7 +55,10 @@ For Task-2 Part A:
      ```
    - This will print goodput, packet loss rate, and maximum TCP window size, and display plots for throughput and window size over time.
 
-### Task-2 Part A
+
+# Task 2: Implementation and Mitigation of SYN Flood Attack
+
+### Part A
 
 #### Running the Experiment
 
@@ -118,7 +121,6 @@ For Task-2 Part A:
      ```
 
 
-# Task 2: Implementation and Mitigation of SYN Flood Attack
 
 ## Running Task 2(B): SYN Flood Mitigation
 
