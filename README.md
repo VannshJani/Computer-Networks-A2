@@ -22,9 +22,14 @@ For Task-1:
 
 For Task-2 Part A:
 
-- **Linux Environment**: To modify kernel parameters.
+- **Mininet**: A network emulator for creating custom network topologies.
+- **iPerf3**: A tool for measuring network throughput.
+- **hping3**: A tool for generating network traffic, used here to simulate a SYN flood attack.
 - **tcpdump**: For capturing network packets.
 - **tshark**: For processing pcap files.
+- **Python 3.x**: For scripting the experiment.
+- **Pandas**: For data manipulation and analysis.
+- **Matplotlib**: For plotting connection durations.
 
 ## Usage
 
@@ -51,35 +56,62 @@ For Task-2 Part A:
 
 ### Task-2 Part A
 
-Instructions for Task-2 Part A will be provided separately.
+#### Running the Experiment
 
-## Example Use Cases
+1. **Starting Mininet and Configuring the Network**:
+   - Use the provided Python script (`syn_flood_experiment.py`) to start Mininet and configure the network.
+   - This script sets up a single switch topology with two hosts, configures sysctl settings on one host to facilitate the SYN flood attack, starts an iperf3 server, and begins capturing packets with tcpdump.
+   - Example command:
+     ```
+     python3 syn_flood_experiment.py
+     ```
 
-- **Experiment Part A**:
-  - Run an experiment with BBR congestion control and no packet loss:
-    ```
-    python3 experiment.py --option=a --cc=bbr --loss=0
-    ```
-  - Analyze the resulting pcap file:
-    ```
-    python3 analyze_pcap.py pcap_captures/capture_a_bbr_0_h7_0.pcap
-    ```
+2. **Generating the SYN Flood Attack**:
+   - The script automatically starts a SYN flood attack using hping3 after 20 seconds of legitimate traffic.
+   - The attack runs for 100 seconds.
 
-- **Experiment Part B**:
-  - Run a staggered client experiment with Westwood congestion control:
-    ```
-    python3 experiment.py --option=b --cc=westwood --loss=0
-    ```
-  - Analyze the pcap file:
-    ```
-    python3 analyze_pcap.py pcap_captures/capture_b_westwood_0_h7_0.pcap
-    ```
+3. **Stopping the Experiment**:
+   - After stopping the SYN flood attack, the script allows legitimate traffic to continue for another 20 seconds before stopping it.
+   - Finally, it stops tcpdump and exits Mininet.
 
-## Contributing
+#### Analyzing the pcap File
 
-Contributions are welcome. Please ensure that any new code adheres to the existing structure and style.
+1. **Extracting TCP Details**:
+   - Use the provided Bash script (`extract_tcp_details.sh`) to extract TCP packet details from the pcap file using tshark.
+   - Example command:
+     ```
+     ./extract_tcp_details.sh capture.pcap
+     ```
 
-## Acknowledgments
+2. **Computing Connection Durations**:
+   - Use the Python script (`compute_connection_durations.py`) to compute connection durations from the extracted TCP details.
+   - This script saves the results to a CSV file.
+   - Example command:
+     ```
+     python3 compute_connection_durations.py
+     ```
 
-- This project uses Mininet for network emulation and iPerf3 for throughput measurement.
-- Scapy is used for parsing pcap files, and Matplotlib for plotting.
+3. **Plotting Connection Durations**:
+   - Use the Python script (`plot_connection_durations.py`) to plot connection durations over time.
+   - This script loads the computed connection durations and plots them with key event markers (legitimate traffic start, attack start/end, legitimate traffic end).
+   - Example command:
+     ```
+     python3 plot_connection_durations.py
+     ```
+
+#### Example Use Cases
+
+- **Running the Full Experiment**:
+  1. Start the Mininet experiment:
+     ```
+     python3 syn_flood_experiment.py
+     ```
+  2. Extract TCP details from the pcap file:
+     ```
+     ./extract_tcp_details.sh capture.pcap
+     ```
+  3. Compute and plot connection durations:
+     ```
+     python3 compute_connection_durations.py
+     python3 plot_connection_durations.py
+     ```
