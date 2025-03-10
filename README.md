@@ -80,7 +80,7 @@ For Task-2 Part A:
    - Use the provided Bash script (`extract_tcp_details.sh`) to extract TCP packet details from the pcap file using tshark.
    - Example command:
      ```
-     ./extract_tcp_details.sh capture.pcap
+     bash extract_tcp.sh capture.pcap
      ```
 
 2. **Computing Connection Durations**:
