@@ -108,7 +108,7 @@ For Task-2 Part A:
      ```
   2. Extract TCP details from the pcap file:
      ```
-     ./extract_tcp_details.sh capture.pcap
+     bash extract_tcp.sh capture.pcap
      ```
   3. Compute and plot connection durations:
      ```
